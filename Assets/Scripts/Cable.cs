@@ -6,6 +6,9 @@ namespace GameMath.Crane
 {
     public class Cable : MonoBehaviour
     {
+        [SerializeField] private Transform _trolley;
+        [SerializeField] private Transform _hook;
+
         void Awake() { }
 
         void Update() { }
