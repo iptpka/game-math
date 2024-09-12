@@ -6,9 +6,16 @@ namespace GameMath.Crane
     {
         [SerializeField] private Transform _trolley;
         [SerializeField] private Transform _hook;
+        private LineRenderer _lineRenderer;
 
-        void Awake() { }
+        void Awake()
+        {
+            _lineRenderer = GetComponent<LineRenderer>();
+        }
 
-        void Update() { }
+        void LateUpdate()
+        {
+            _lineRenderer.SetPositions(new[] { _trolley.position, _hook.position });
+        }
     }
 }
