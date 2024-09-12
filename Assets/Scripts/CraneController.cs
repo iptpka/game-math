@@ -16,10 +16,24 @@ namespace GameMath.Crane
 
         void Awake()
         {
-            _craneLeft.OnIsHeldChanged.AddListener((isHeld) => { Debug.Log($"Crane left {(isHeld ? "started" : "stopped")} holding"); });
-            _craneRight.OnIsHeldChanged.AddListener((isHeld) => { Debug.Log($"Crane right {(isHeld ? "started" : "stopped")} holding"); });
-            _cableControl.onValueChanged.AddListener((value) => { Debug.Log($"Cable slider at: {value}"); });
-            _trolleyControl.onValueChanged.AddListener(value => { Debug.Log($"Trolley slider at: {value}"); });
+            _craneLeft.OnIsHeldChanged.AddListener((isHeld) 
+                => { if (isHeld) OnCraneInputStart(-1); else OnCraneInputStop(); });
+            _craneRight.OnIsHeldChanged.AddListener((isHeld)
+                => { if (isHeld) OnCraneInputStart(1); else OnCraneInputStop(); });
+            _cableControl.onValueChanged.AddListener((value) 
+                => { Debug.Log($"Cable slider at: {value}"); });
+            _trolleyControl.onValueChanged.AddListener(value 
+                => { Debug.Log($"Trolley slider at: {value}"); });
+        }
+
+        void OnCraneInputStart(int inputDirection)
+        {
+            _crane.StartSwinging(inputDirection);
+        }
+
+        void OnCraneInputStop()
+        {
+            _crane.StopSwinging();
         }
     }
 }
