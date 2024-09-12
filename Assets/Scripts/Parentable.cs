@@ -24,7 +24,7 @@ namespace GameMath.Util
             return _parent.rotation * _relativeRotation;
         }
 
-        void Update()
+        protected virtual void LateUpdate()
         {
             transform.SetPositionAndRotation(GetTargetPosition(), GetTargetRotation());
         }
