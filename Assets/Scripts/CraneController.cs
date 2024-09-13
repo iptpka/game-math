@@ -23,7 +23,7 @@ namespace GameMath.Crane
             _cableControl.onValueChanged.AddListener((value) 
                 => { Debug.Log($"Cable slider at: {value}"); });
             _trolleyControl.onValueChanged.AddListener(value 
-                => { Debug.Log($"Trolley slider at: {value}"); });
+                => OnTrolleySliderValueChanged(value));
         }
 
         void OnCraneInputStart(int inputDirection)
@@ -34,6 +34,11 @@ namespace GameMath.Crane
         void OnCraneInputStop()
         {
             _crane.StopSwinging();
+        }
+
+        void OnTrolleySliderValueChanged(float newValue)
+        {
+            _trolley.SetNewDollyTarget(newValue);
         }
     }
 }

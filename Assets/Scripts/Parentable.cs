@@ -10,6 +10,11 @@ namespace GameMath.Util
 
         void Awake()
         {
+            UpdateRelativeTransform();
+        }
+
+        protected void UpdateRelativeTransform()
+        {
             _relativePosition = _parent.InverseTransformPoint(transform.position);
             _relativeRotation = Quaternion.Inverse(_parent.rotation) * transform.rotation;
         }
