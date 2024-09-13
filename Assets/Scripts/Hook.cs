@@ -11,8 +11,9 @@ namespace GameMath.Crane
             var delayedPosition = Vector3.Lerp(transform.position, GetTargetPosition(), 5f * Time.deltaTime);
             var delayedRotation = Quaternion.Lerp(transform.rotation, GetTargetRotation(), 5f * Time.deltaTime);
             var trolleyDirection = _parent.position - transform.position;
-            var forward = transform.position - _crane.position;
-            delayedRotation.SetLookRotation(Vector3.Cross(forward, trolleyDirection), trolleyDirection);
+            //For aligning the hook 'forward' which faces to the right when looking from the crane
+            var forward = Vector3.Cross(transform.position - _crane.position, trolleyDirection); 
+            delayedRotation.SetLookRotation(forward, trolleyDirection);
             transform.SetPositionAndRotation(delayedPosition, delayedRotation);
         }
     }
