@@ -163,6 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 363527139}
   - component: {fileID: 363527140}
+  - component: {fileID: 363527141}
   m_Layer: 0
   m_Name: Trolley Far Limit
   m_TagString: Untagged
@@ -199,6 +200,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.5
   color: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &363527141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 363527138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d14721c377daf74dbe6297cbec0646f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 8658184023392300794}
 --- !u!114 &403503056 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3938172280707036622, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
@@ -220,6 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 601031390}
   - component: {fileID: 601031391}
+  - component: {fileID: 601031392}
   m_Layer: 0
   m_Name: Trolley Near Limit
   m_TagString: Untagged
@@ -256,6 +271,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.5
   color: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &601031392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601031389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d14721c377daf74dbe6297cbec0646f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 8658184023392300794}
 --- !u!114 &622717637 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1064534356098386809, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
@@ -1314,6 +1342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 8658184023392300784}
+  _crane: {fileID: 8658184023392300794}
 --- !u!33 &8658184023395725016
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1334,7 +1363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab404b082b30715418d03f54048f011a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSwingSpeed: 15
+  _maxSwingSpeed: 50
   _swingAcceleration: 0.01
   _swingDeceleration: 0.1
   _swingStopThreshold: 0.015
