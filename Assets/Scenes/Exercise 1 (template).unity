@@ -1495,8 +1495,9 @@ MonoBehaviour:
   _parent: {fileID: 8658184023392300784}
   _crane: {fileID: 8658184023392300794}
   _liftingSpeed: 5
-  _loweringSpeed: 5
-  _lowerLimit: 0
+  _lowerLimit: 5
+  _followingSpeed: 5
+  _followDelayMultiplier: 0.8
 --- !u!33 &8658184023395725016
 MeshFilter:
   m_ObjectHideFlags: 0
