@@ -1,5 +1,6 @@
 using GameMath.Util;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace GameMath.Crane
 {
@@ -9,12 +10,13 @@ namespace GameMath.Crane
         [SerializeField] private float _liftingSpeed = 5f;
         [SerializeField] private float _lowerLimit = 5f;
         [SerializeField] private float _followingSpeed = 5f;
-        [SerializeField] private float _followDelayMultiplier = 1.5f;
+        [SerializeField] private float _lengthDelay = 0.5f;
         private float _upperLimit;
         private float _targetHeight;
-        private bool _isHeightChanging = true;
+        private bool _isHeightChanging = false;
+        private bool _isConnected = false;
 
-        private void Start()
+        void Awake()
         {
             _upperLimit = _targetHeight = transform.position.y;
         }
@@ -25,14 +27,14 @@ namespace GameMath.Crane
             targetPosition.y = transform.position.y;
             // Naïve following speed delay from "longer cable"
             // -> the smaller transform y is, the slower it follows the parent
-            float lengthDelay = (Mathf.Abs(_upperLimit - transform.position.y - _lowerLimit) * _followDelayMultiplier)
-                                    / (_upperLimit - _lowerLimit);
-            float followingSpeed = _followingSpeed - (_followingSpeed * (lengthDelay));
+            float lengthPercent = (_upperLimit - transform.position.y )
+                                    / Mathf.Abs(_upperLimit - _lowerLimit);
+            float followingSpeed = _followingSpeed - (_followingSpeed * lengthPercent * _lengthDelay);
             // Lerped smooth following of parent for fake inertia
             var delayedPosition = Vector3.Lerp(transform.position, targetPosition,
                                                 followingSpeed * Time.deltaTime);
             var delayedRotation = Quaternion.Lerp(transform.rotation, GetTargetRotation(),
-                                                  (_followingSpeed * (5)) * Time.deltaTime);
+                                                  followingSpeed * Time.deltaTime);
             // Vector from this to the trolley
             var trolleyDirection = _parent.position - transform.position;
             // For aligning the hook 'forward' which faces to the right when looking from the crane
@@ -51,6 +53,7 @@ namespace GameMath.Crane
                 {
                     _isHeightChanging = false;
                 }
+
             }
             transform.SetPositionAndRotation(delayedPosition, delayedRotation);
         }
@@ -60,6 +63,18 @@ namespace GameMath.Crane
             if (targetHeightPercent > 1 || targetHeightPercent < 0) return;
             _targetHeight = ((_upperLimit - _lowerLimit) * targetHeightPercent) + _lowerLimit;
             _isHeightChanging = true;
+        }
+
+        public bool Connect()
+        {
+            if (_isConnected) return false;
+            _isConnected = true;
+            return true;
+        }
+
+        public void Disconnect()
+        {
+            _isConnected = false;
         }
     }
 }
