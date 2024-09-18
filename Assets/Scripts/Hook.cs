@@ -15,6 +15,7 @@ namespace GameMath.Crane
         private float _targetHeight;
         private bool _isHeightChanging = false;
         private bool _isConnected = false;
+        private Hookable _hooked;
 
         void Awake()
         {
@@ -46,10 +47,10 @@ namespace GameMath.Crane
             var forward = Vector3.Cross(transform.position - _crane.position, trolleyDirection) * -1;
             // Aligns transform up towards trolley
             delayedRotation.SetLookRotation(forward, trolleyDirection);
-            if (_isHeightChanging)
+            if (_isHeightChanging && !(_isConnected && _targetHeight < transform.position.y && !_hooked.CanMoveDown))
             {
                 delayedPosition.y = Mathf.Lerp(delayedPosition.y, _targetHeight,
-                                               _verticalSpeed * Time.deltaTime);
+                           _verticalSpeed * Time.deltaTime);
                 if (Mathf.Approximately(delayedPosition.y, _targetHeight))
                     _isHeightChanging = false;
             }
@@ -63,15 +64,17 @@ namespace GameMath.Crane
             _isHeightChanging = true;
         }
 
-        public bool Connect()
+        public bool Connect(Hookable hooked)
         {
             if (_isConnected) return false;
             _isConnected = true;
+            _hooked = hooked;
             return true;
         }
 
         public void Disconnect()
         {
+            _hooked = null;
             _isConnected = false;
         }
     }
