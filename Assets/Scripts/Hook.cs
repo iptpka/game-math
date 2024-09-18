@@ -62,7 +62,7 @@ namespace GameMath.Crane
         public void SetHeightTarget(float targetHeightPercent)
         {
             if (targetHeightPercent > 1 || targetHeightPercent < 0) return;
-            _targetHeight = (_upperLimit - _lowerLimit * (1 - targetHeightPercent)) + _lowerLimit;
+            _targetHeight = ((_upperLimit - _lowerLimit) * (1 - targetHeightPercent)) + _lowerLimit;
             _isHeightChanging = true;
         }
 
