@@ -16,19 +16,21 @@ namespace GameMath.Crane
         private bool _isHeightChanging = false;
         private bool _isConnected = false;
         private Hookable _hooked;
+        public float LengthPercent => (_upperLimit - transform.position.y)
+                                    / Mathf.Abs(_upperLimit - _lowerLimit);
 
         void Awake()
         {
-            _upperLimit = _targetHeight = transform.position.y;
+            var trolleyBounds = _parent.GetComponent<Renderer>().bounds;
+            _upperLimit = trolleyBounds.center.y - trolleyBounds.extents.y;
+            _targetHeight = transform.position.y;
         }
 
         float GetCurrentFollowingSpeed()
         {
             // Naïve following speed delay from "longer cable"
             // -> the smaller transform y is, the slower it follows the parent
-            float lengthPercent = (_upperLimit - transform.position.y)
-                                    / Mathf.Abs(_upperLimit - _lowerLimit);
-            return _followingSpeed - (_followingSpeed * lengthPercent * _lengthDelay);
+            return _followingSpeed - (_followingSpeed * LengthPercent * _lengthDelay);
         }
 
         override protected void LateUpdate()
@@ -42,7 +44,7 @@ namespace GameMath.Crane
             var delayedRotation = Quaternion.Lerp(transform.rotation, GetTargetRotation(),
                                                   followingSpeed * Time.deltaTime);
             // Vector from this to the trolley
-            var trolleyDirection = _parent.position - transform.position;
+            var trolleyDirection = ParentPosition - transform.position;
             // For aligning the hook 'forward' which faces to the right when looking from the crane
             var forward = Vector3.Cross(transform.position - _crane.position, trolleyDirection) * -1;
             // Aligns transform up towards trolley
@@ -57,10 +59,10 @@ namespace GameMath.Crane
             transform.SetPositionAndRotation(delayedPosition, delayedRotation);
         }
 
-        public void SetNewHeightTarget(float targetHeightPercent)
+        public void SetHeightTarget(float targetHeightPercent)
         {
             if (targetHeightPercent > 1 || targetHeightPercent < 0) return;
-            _targetHeight = ((_upperLimit - _lowerLimit) * targetHeightPercent) + _lowerLimit;
+            _targetHeight = (_upperLimit - _lowerLimit * (1 - targetHeightPercent)) + _lowerLimit;
             _isHeightChanging = true;
         }
 

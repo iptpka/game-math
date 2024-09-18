@@ -26,6 +26,11 @@ namespace GameMath.Crane
                 => OnTrolleySliderValueChanged(value));
         }
 
+        private void Start()
+        {
+            _cableControl.value = _hook.LengthPercent;
+        }
+
         void OnCraneInputStart(int inputDirection)
         {
             _crane.StartSwinging(inputDirection);
@@ -43,7 +48,7 @@ namespace GameMath.Crane
 
         void OnCableSliderValueChanged(float newValue)
         {
-            _hook.SetNewHeightTarget(newValue);
+            _hook.SetHeightTarget(newValue);
         }
     }
 }

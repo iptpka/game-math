@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 8658184023392300794}
+  _parentOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &386606831
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,6 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 8658184023392300794}
+  _parentOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &622717637 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1064534356098386809, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
@@ -1642,6 +1644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 8658184023392300784}
+  _parentOffset: {x: 0.275, y: 0, z: 0}
   _crane: {fileID: 8658184023392300794}
   _verticalSpeed: 5
   _lowerLimit: 5
@@ -1714,6 +1717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 8658184023392300794}
+  _parentOffset: {x: 0, y: 0, z: 0}
   _nearLimit: {fileID: 601031390}
   _farLimit: {fileID: 363527139}
   _dollySpeed: 10
