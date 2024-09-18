@@ -1,95 +1,14 @@
 fileFormatVersion: 2
-guid: b75ef94dd86ecb34eb9e252b92b6761c
+guid: 4d53ee1fc6280b3468f1df66ef718c8c
 ModelImporter:
   serializedVersion: 22200
-  internalIDToNameTable:
-  - first:
-      1: 100000
-    second: //RootNode
-  - first:
-      1: 100002
-    second: scp_cy_crane_02_body
-  - first:
-      1: 100004
-    second: scp_cy_crane_02_bottom
-  - first:
-      1: 100006
-    second: scp_cy_crane_02_cable
-  - first:
-      1: 100008
-    second: scp_cy_crane_02_cable_holder
-  - first:
-      1: 100010
-    second: scp_cy_crane_02_hook
-  - first:
-      4: 400000
-    second: //RootNode
-  - first:
-      4: 400002
-    second: scp_cy_crane_02_body
-  - first:
-      4: 400004
-    second: scp_cy_crane_02_bottom
-  - first:
-      4: 400006
-    second: scp_cy_crane_02_cable
-  - first:
-      4: 400008
-    second: scp_cy_crane_02_cable_holder
-  - first:
-      4: 400010
-    second: scp_cy_crane_02_hook
-  - first:
-      23: 2300000
-    second: scp_cy_crane_02_body
-  - first:
-      23: 2300002
-    second: scp_cy_crane_02_bottom
-  - first:
-      23: 2300004
-    second: scp_cy_crane_02_cable
-  - first:
-      23: 2300006
-    second: scp_cy_crane_02_cable_holder
-  - first:
-      23: 2300008
-    second: scp_cy_crane_02_hook
-  - first:
-      33: 3300000
-    second: scp_cy_crane_02_body
-  - first:
-      33: 3300002
-    second: scp_cy_crane_02_bottom
-  - first:
-      33: 3300004
-    second: scp_cy_crane_02_cable
-  - first:
-      33: 3300006
-    second: scp_cy_crane_02_cable_holder
-  - first:
-      33: 3300008
-    second: scp_cy_crane_02_hook
-  - first:
-      43: 4300000
-    second: scp_cy_crane_02_cable_holder
-  - first:
-      43: 4300002
-    second: scp_cy_crane_02_cable
-  - first:
-      43: 4300004
-    second: scp_cy_crane_02_hook
-  - first:
-      43: 4300006
-    second: scp_cy_crane_02_body
-  - first:
-      43: 4300008
-    second: scp_cy_crane_02_bottom
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
-    materialImportMode: 0
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -121,13 +40,13 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
-    importPhysicalCameras: 0
+    importPhysicalCameras: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
-    nodeNameCollisionStrategy: 0
-    fileIdsGeneration: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -144,7 +63,7 @@ ModelImporter:
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 0
+    secondaryUVMarginMethod: 1
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
@@ -159,7 +78,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -175,15 +94,15 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
-    skeletonHasParents: 0
+    skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
-  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 0
-  remapMaterialsIfMaterialImportModeIsNone: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

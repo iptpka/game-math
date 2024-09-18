@@ -41,14 +41,16 @@ namespace GameMath.Crane
             // Lerped smooth following of parent for fake inertia
             var delayedPosition = Vector3.Lerp(transform.position, targetPosition,
                                                 followingSpeed * Time.deltaTime);
-            var delayedRotation = Quaternion.Lerp(transform.rotation, GetTargetRotation(),
-                                                  followingSpeed * Time.deltaTime);
+            if (Vector3.Distance(delayedPosition, targetPosition) < 0.05f)
+            {
+                delayedPosition = targetPosition;
+            }
             // Vector from this to the trolley
-            var trolleyDirection = ParentPosition - transform.position;
+            var trolleyDirection = _parent.position - delayedPosition;
             // For aligning the hook 'forward' which faces to the right when looking from the crane
-            var forward = Vector3.Cross(transform.position - _crane.position, trolleyDirection) * -1;
+            var forward = Vector3.Cross(delayedPosition - _crane.position, trolleyDirection) * -1;
             // Aligns transform up towards trolley
-            delayedRotation.SetLookRotation(forward, trolleyDirection);
+            var lookAtRotation = Quaternion.LookRotation(forward, trolleyDirection);
             if (_isHeightChanging && !(_isConnected && _targetHeight < transform.position.y && !_hooked.CanMoveDown))
             {
                 delayedPosition.y = Mathf.Lerp(delayedPosition.y, _targetHeight,
@@ -56,7 +58,7 @@ namespace GameMath.Crane
                 if (Mathf.Approximately(delayedPosition.y, _targetHeight))
                     _isHeightChanging = false;
             }
-            transform.SetPositionAndRotation(delayedPosition, delayedRotation);
+            transform.SetPositionAndRotation(delayedPosition, lookAtRotation);
         }
 
         public void SetHeightTarget(float targetHeightPercent)
