@@ -5,8 +5,10 @@ namespace GameMath.Util
     public class Parentable : MonoBehaviour
     {
         [SerializeField] protected Transform _parent;
+        [SerializeField] protected Vector3 _parentOffset;
         protected Vector3 _relativePosition;
         protected Quaternion _relativeRotation;
+        protected Vector3 ParentPosition => _parent.position + _parentOffset;
 
         void Start()
         {
