@@ -22,7 +22,7 @@ namespace GameMath.Crane
         void Awake()
         {
             var trolleyBounds = _parent.GetComponent<Renderer>().bounds;
-            _upperLimit = trolleyBounds.center.y - trolleyBounds.extents.y;
+            _upperLimit = trolleyBounds.center.y - trolleyBounds.extents.y - 1f;
             _targetHeight = transform.position.y;
         }
 
@@ -41,10 +41,6 @@ namespace GameMath.Crane
             // Lerped smooth following of parent for fake inertia
             var delayedPosition = Vector3.Lerp(transform.position, targetPosition,
                                                 followingSpeed * Time.deltaTime);
-            if (Vector3.Distance(delayedPosition, targetPosition) < 0.05f)
-            {
-                delayedPosition = targetPosition;
-            }
             // Vector from this to the trolley
             var trolleyDirection = _parent.position - delayedPosition;
             // For aligning the hook 'forward' which faces to the right when looking from the crane
