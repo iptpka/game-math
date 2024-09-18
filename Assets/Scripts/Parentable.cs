@@ -8,7 +8,7 @@ namespace GameMath.Util
         protected Vector3 _relativePosition;
         protected Quaternion _relativeRotation;
 
-        void Awake()
+        void Start()
         {
             UpdateRelativeTransform();
         }
