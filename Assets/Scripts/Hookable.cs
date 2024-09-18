@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace GameMath.Crane
@@ -8,10 +9,13 @@ namespace GameMath.Crane
     {
         [SerializeField] LayerMask _groundLayer;
         private Hook _hook;
+        private Transform _targetArea;
         private Vector3 _relativePosition;
         private Quaternion _relativeRotation;
-        private bool _isHooked = false;
         private float _height;
+        private bool _canBeHooked = true;
+        private bool _isHooked = false;
+        private bool _canBeReleased = false;
         public bool CanMoveDown => DistanceToGround() > _height;
 
         void Start()
@@ -28,9 +32,9 @@ namespace GameMath.Crane
             return -1;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected void OnTriggerEnter(Collider other)
         {
-            if (_isHooked || !other.TryGetComponent(out Hook hook) || !hook.Connect(this)) return;
+            if (!_canBeHooked || _isHooked || !other.TryGetComponent(out Hook hook) || !hook.Connect(this)) return;
             _hook = hook;
             _isHooked = true;
             _relativePosition = _hook.transform.InverseTransformPoint(transform.position);
@@ -50,7 +54,36 @@ namespace GameMath.Crane
         protected virtual void LateUpdate()
         {
             if (!_isHooked) return;
+            if (_canBeReleased && DistanceToGround() <= _height)
+            {
+                Disconnect();
+                return;
+            }
             transform.SetPositionAndRotation(GetTargetPosition(), GetTargetRotation());
+        }
+
+        protected void Disconnect()
+        {
+            transform.position = new Vector3(_targetArea.position.x,
+                                             _targetArea.position.y + _height,
+                                             _targetArea.position.z);
+            _isHooked = false;
+            _canBeHooked = false;
+            _targetArea = null;
+            _hook.Disconnect();
+        }
+
+        public void SetReleaseTarget(Transform targetArea)
+        {
+            if (!_isHooked) return;
+            _canBeReleased = true;
+            _targetArea = targetArea;
+        }
+
+        public void RemoveReleaseTarget()
+        {
+            _canBeReleased = false;
+            _targetArea = null;
         }
     }
 }

@@ -69,6 +69,7 @@ namespace GameMath.Crane
             if (_isConnected) return false;
             _isConnected = true;
             _hooked = hooked;
+            GetComponent<Collider>().enabled = false;
             return true;
         }
 
@@ -76,6 +77,7 @@ namespace GameMath.Crane
         {
             _hooked = null;
             _isConnected = false;
+            GetComponent<Collider>().enabled = true;
         }
     }
 }
