@@ -1648,8 +1648,8 @@ MonoBehaviour:
   _crane: {fileID: 8658184023392300794}
   _verticalSpeed: 5
   _lowerLimit: 5
-  _followingSpeed: 5
-  _lengthDelay: 0.5
+  _followingSpeed: 15
+  _lengthDelay: 0.85
 --- !u!33 &8658184023395725016
 MeshFilter:
   m_ObjectHideFlags: 0
