@@ -7,7 +7,7 @@ namespace GameMath.Crane
     public class Hook : Parentable
     {
         [SerializeField] private Transform _crane;
-        [SerializeField] private float _liftingSpeed = 5f;
+        [SerializeField] private float _verticalSpeed = 5f;
         [SerializeField] private float _lowerLimit = 5f;
         [SerializeField] private float _followingSpeed = 5f;
         [SerializeField] private float _lengthDelay = 0.5f;
@@ -21,15 +21,20 @@ namespace GameMath.Crane
             _upperLimit = _targetHeight = transform.position.y;
         }
 
+        float GetCurrentFollowingSpeed()
+        {
+            // Naïve following speed delay from "longer cable"
+            // -> the smaller transform y is, the slower it follows the parent
+            float lengthPercent = (_upperLimit - transform.position.y)
+                                    / Mathf.Abs(_upperLimit - _lowerLimit);
+            return _followingSpeed - (_followingSpeed * lengthPercent * _lengthDelay);
+        }
+
         override protected void LateUpdate()
         {
             var targetPosition = GetTargetPosition();
             targetPosition.y = transform.position.y;
-            // Naïve following speed delay from "longer cable"
-            // -> the smaller transform y is, the slower it follows the parent
-            float lengthPercent = (_upperLimit - transform.position.y )
-                                    / Mathf.Abs(_upperLimit - _lowerLimit);
-            float followingSpeed = _followingSpeed - (_followingSpeed * lengthPercent * _lengthDelay);
+            var followingSpeed = GetCurrentFollowingSpeed();
             // Lerped smooth following of parent for fake inertia
             var delayedPosition = Vector3.Lerp(transform.position, targetPosition,
                                                 followingSpeed * Time.deltaTime);
@@ -43,17 +48,10 @@ namespace GameMath.Crane
             delayedRotation.SetLookRotation(forward, trolleyDirection);
             if (_isHeightChanging)
             {
-                var delayedHeight = new Vector3(delayedPosition.x,
-                                                _targetHeight,
-                                                delayedPosition.z);
-                delayedPosition = Vector3.Lerp(delayedPosition,
-                                               delayedHeight,
-                                               _liftingSpeed * Time.deltaTime);
-                if (Mathf.Approximately(Vector3.Distance(delayedPosition, transform.position), 0))
-                {
+                delayedPosition.y = Mathf.Lerp(delayedPosition.y, _targetHeight,
+                                               _verticalSpeed * Time.deltaTime);
+                if (Mathf.Approximately(delayedPosition.y, _targetHeight))
                     _isHeightChanging = false;
-                }
-
             }
             transform.SetPositionAndRotation(delayedPosition, delayedRotation);
         }
