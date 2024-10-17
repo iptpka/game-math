@@ -1,7 +1,5 @@
-using GameMath.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace GameMath.Crane
 {
@@ -11,11 +9,12 @@ namespace GameMath.Crane
         [SerializeField] private Trolley _trolley;
         [SerializeField] private Hook _hook;
 
-        public void SetNewTarget(BaseEventData eventData)
+        public void SetNewTarget(PointerEventData eventData)
         {
-            if (!eventData.selectedObject.TryGetComponent(out Hookable target))
+            if (!eventData.pointerPress.TryGetComponent(out Hookable target))
                 return;
-
+            var targetPosition = target.transform.position;
+            _crane.SetTarget(targetPosition);
 
         }
 
