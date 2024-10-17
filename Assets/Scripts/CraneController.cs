@@ -1,34 +1,22 @@
 using GameMath.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GameMath.Crane
 {
     public class CraneController : MonoBehaviour
     {
-        [SerializeField] private HoldableButton _craneLeft;
-        [SerializeField] private HoldableButton _craneRight;
-        [SerializeField] private Slider _trolleyControl;
-        [SerializeField] private Slider _cableControl;
         [SerializeField] private Crane _crane;
         [SerializeField] private Trolley _trolley;
         [SerializeField] private Hook _hook;
 
-        void Awake()
+        public void SetNewTarget(BaseEventData eventData)
         {
-            _craneLeft.OnIsHeldChanged.AddListener((isHeld) 
-                => { if (isHeld) OnCraneInputStart(-1); else OnCraneInputStop(); });
-            _craneRight.OnIsHeldChanged.AddListener((isHeld)
-                => { if (isHeld) OnCraneInputStart(1); else OnCraneInputStop(); });
-            _cableControl.onValueChanged.AddListener((value) 
-                => OnCableSliderValueChanged(value));
-            _trolleyControl.onValueChanged.AddListener(value 
-                => OnTrolleySliderValueChanged(value));
-        }
+            if (!eventData.selectedObject.TryGetComponent(out Hookable target))
+                return;
 
-        private void Start()
-        {
-            _cableControl.value = _hook.LengthPercent;
+
         }
 
         void OnCraneInputStart(int inputDirection)

@@ -1,5 +1,6 @@
 using GameMath.Util;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GameMath.Crane
 {
@@ -10,6 +11,9 @@ namespace GameMath.Crane
         [SerializeField] private float _dollySpeed;
         private float _dollyTarget = 1f;
         private bool _isDollying = false;
+        public UnityEvent ReachedTarget;
+
+        private void Awake() => ReachedTarget ??= new();
 
         void Update()
         {
@@ -23,7 +27,11 @@ namespace GameMath.Crane
             var delayedPosition = Vector3.Lerp(transform.position, dollyTargetPosition, _dollySpeed * Time.deltaTime);
             transform.position = delayedPosition;
             UpdateRelativeTransform();
-            if (Vector3.Distance(transform.position, dollyTargetPosition) < 0.001f) _isDollying = false;
+            if (Vector3.Distance(transform.position, dollyTargetPosition) < 0.001f)
+            {
+                _isDollying = false;
+                ReachedTarget.Invoke();
+            }
         }
 
         public void SetNewDollyTarget(float targetPosition)

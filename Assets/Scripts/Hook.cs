@@ -1,5 +1,6 @@
 using GameMath.Util;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Video;
 
 namespace GameMath.Crane
@@ -15,15 +16,17 @@ namespace GameMath.Crane
         private float _targetHeight;
         private bool _isHeightChanging = false;
         private bool _isConnected = false;
-        private Hookable _hooked;
+        private Hookable _hookedItem;
         public float LengthPercent => (_upperLimit - transform.position.y)
                                     / Mathf.Abs(_upperLimit - _lowerLimit);
 
+        public UnityEvent Hooked;
         void Awake()
         {
             var trolleyBounds = _parent.GetComponent<Renderer>().bounds;
             _upperLimit = trolleyBounds.center.y - trolleyBounds.extents.y - 1f;
             _targetHeight = transform.position.y;
+            Hooked ??= new();
         }
 
         float GetCurrentFollowingSpeed()
@@ -47,7 +50,7 @@ namespace GameMath.Crane
             var forward = Vector3.Cross(delayedPosition - _crane.position, trolleyDirection) * -1;
             // Aligns transform up towards trolley
             var lookAtRotation = Quaternion.LookRotation(forward, trolleyDirection);
-            if (_isHeightChanging && !(_isConnected && _targetHeight < transform.position.y && !_hooked.CanMoveDown))
+            if (_isHeightChanging && !(_isConnected && _targetHeight < transform.position.y && !_hookedItem.CanMoveDown))
             {
                 delayedPosition.y = Mathf.Lerp(delayedPosition.y, _targetHeight,
                            _verticalSpeed * Time.deltaTime);
@@ -68,14 +71,15 @@ namespace GameMath.Crane
         {
             if (_isConnected) return false;
             _isConnected = true;
-            _hooked = hooked;
+            _hookedItem = hooked;
             GetComponent<Collider>().enabled = false;
+            Hooked.Invoke();
             return true;
         }
 
         public void Disconnect()
         {
-            _hooked = null;
+            _hookedItem = null;
             _isConnected = false;
             GetComponent<Collider>().enabled = true;
         }

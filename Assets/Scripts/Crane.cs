@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GameMath.Crane
 {
@@ -13,6 +14,10 @@ namespace GameMath.Crane
         private int _swingDirection;
         private float _currentSwingSpeed = 0f;
         private float _lerpTime = 0f;
+
+        public UnityEvent ReachedTarget;
+
+        private void Awake() => ReachedTarget ??= new();
 
         void Update()
         {
@@ -58,6 +63,7 @@ namespace GameMath.Crane
         {
             _lerpTime = 0f;
             _isSwinging = false;
+            ReachedTarget.Invoke();
         }
     }
 }
