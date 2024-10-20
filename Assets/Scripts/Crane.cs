@@ -5,76 +5,44 @@ namespace GameMath.Crane
 {
     public class Crane : MonoBehaviour
     {
-        [SerializeField] private float _maxSwingSpeed = 15f;
-        [SerializeField] private float _swingAcceleration = 1f;
-        [SerializeField] private float _swingDeceleration = 2f;
-        [SerializeField] private float _swingStopThreshold = 0.015f;
+        [SerializeField] private float _swingSpeed = 15f;
+        [SerializeField] private Vector3 _craneForward;
+        private float _swingDuration;
+        private float _swingStartTime;
         private bool _isSwinging = false;
-        private bool _hasStopped = true;
-        private int _swingDirection;
-        private float _currentSwingSpeed = 0f;
-        private Quaternion _targetRotation;
-
+        private Quaternion _swingStart;
+        private Quaternion _swingTarget;
         public UnityEvent ReachedTarget;
 
         private void Awake() => ReachedTarget ??= new();
 
         void Update()
         {
-            if (!_isSwinging && _hasStopped) return;
-            if (!_isSwinging && !_hasStopped) Decelerate();
-            else if (_currentSwingSpeed < _maxSwingSpeed) Accelerate();
-            var rotation = Quaternion.AngleAxis(_currentSwingSpeed * Time.deltaTime, transform.up);
-            transform.rotation *= rotation;
-        }
-
-        void Accelerate()
-        {
-            var blend = 1 - Mathf.Pow(0.5f, Time.deltaTime * _swingAcceleration);
-            _currentSwingSpeed = Mathf.Lerp(_currentSwingSpeed, _maxSwingSpeed * _swingDirection, blend);
-            if (Mathf.Approximately(_currentSwingSpeed, _maxSwingSpeed))
+            if (!_isSwinging) return;
+            var t = (Time.time - _swingStartTime) / _swingDuration;
+            if (t >= 1)
             {
-                _currentSwingSpeed = _maxSwingSpeed;
-            }
-        }
-
-        void Decelerate()
-        {
-            if (Mathf.Abs(_currentSwingSpeed) < _swingStopThreshold)
-            {
-                _currentSwingSpeed = 0f;
-                _hasStopped = true;
+                _isSwinging = false;
+                transform.rotation = _swingTarget;
+                ReachedTarget.Invoke();
                 return;
             }
-
-            var blend = 1 - Mathf.Pow(0.5f, Time.deltaTime * _swingDeceleration);
-            _currentSwingSpeed = Mathf.Lerp(_currentSwingSpeed, 0f, blend);
-
+            var blend = Mathf.SmoothStep(0, 1, t);
+            blend *= blend;
+            transform.rotation = Quaternion.Lerp(_swingStart, _swingTarget, blend);
         }
 
-        public void SetTarget(Vector3 position)
+        public void SetSwingTarget(Vector3 targetPosition)
         {
-            if (_isSwinging)
-            {
-                StopSwinging();
-            }
-            else
-            {
-                StartSwinging(1);
-            }
-        }
-
-        public void StartSwinging(int direction)
-        {
+            var forward = transform.rotation * _craneForward;
+            var angle = Vector3.SignedAngle(forward, Vector3.ProjectOnPlane(targetPosition - transform.position, Vector3.up), transform.up);
+            _swingTarget = transform.rotation * Quaternion.AngleAxis(angle, transform.up);
+            _swingStart = transform.rotation;
+            _swingStartTime = Time.time;
+            float angleRatio = (Mathf.Abs((Mathf.Abs(angle) - 180) / 180));
+            angleRatio *= angleRatio * angleRatio * angleRatio * 5f;
+            _swingDuration = (Mathf.Abs(angle) / _swingSpeed) * (1 + angleRatio);
             _isSwinging = true;
-            _hasStopped = false;
-            _swingDirection = direction;
-        }
-
-        public void StopSwinging()
-        {
-            _isSwinging = false;
-            ReachedTarget.Invoke();
         }
     }
 }

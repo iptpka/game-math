@@ -8,34 +8,27 @@ namespace GameMath.Crane
         [SerializeField] private Crane _crane;
         [SerializeField] private Trolley _trolley;
         [SerializeField] private Hook _hook;
-
+        Vector3 _target;
         public void SetNewTarget(PointerEventData eventData)
         {
             if (!eventData.pointerPress.TryGetComponent(out Hookable target))
                 return;
-            var targetPosition = target.transform.position;
-            _crane.SetTarget(targetPosition);
-
+            _target = target.transform.position;
+            _crane.SetSwingTarget(_target);
+            _crane.ReachedTarget.AddListener(OnCraneReachedTarget);
         }
 
-        void OnCraneInputStart(int inputDirection)
+        void OnCraneReachedTarget()
         {
-            _crane.StartSwinging(inputDirection);
+            _crane.ReachedTarget.RemoveAllListeners();
+            _trolley.SetDollyTarget(_target);
+            _trolley.ReachedTarget.AddListener(OnTrolleyReachedTarget);
         }
 
-        void OnCraneInputStop()
+        void OnTrolleyReachedTarget()
         {
-            _crane.StopSwinging();
-        }
-
-        void OnTrolleySliderValueChanged(float newValue)
-        {
-            _trolley.SetNewDollyTarget(newValue);
-        }
-
-        void OnCableSliderValueChanged(float newValue)
-        {
-            _hook.SetHeightTarget(newValue);
+            _trolley.ReachedTarget.RemoveAllListeners();
+            _hook.SetTargetHeight(_target);
         }
     }
 }

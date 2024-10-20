@@ -9,7 +9,10 @@ namespace GameMath.Crane
         [SerializeField] private Transform _nearLimit;
         [SerializeField] private Transform _farLimit;
         [SerializeField] private float _dollySpeed;
-        private float _dollyTarget = 1f;
+        private float _dollyDuration;
+        private float _dollyStartTime;
+        private Vector3 _dollyStart;
+        private Vector3 _dollyTarget;
         private bool _isDollying = false;
         public UnityEvent ReachedTarget;
 
@@ -23,21 +26,26 @@ namespace GameMath.Crane
         protected override void LateUpdate()
         {
             if (!_isDollying) return;
-            var dollyTargetPosition = _nearLimit.position + ((_farLimit.position - _nearLimit.position)*_dollyTarget);
-            var delayedPosition = Vector3.Lerp(transform.position, dollyTargetPosition, _dollySpeed * Time.deltaTime);
-            transform.position = delayedPosition;
-            UpdateRelativeTransform();
-            if (Vector3.Distance(transform.position, dollyTargetPosition) < 0.001f)
+            var t = (Time.time - _dollyStartTime) / _dollyDuration;
+            if (t >= 1)
             {
                 _isDollying = false;
+                transform.position = _dollyTarget;
                 ReachedTarget.Invoke();
+                return;
             }
+            var blend = Mathf.SmoothStep(0, 1, t);
+            blend *= blend;
+            transform.position = Vector3.Lerp(_dollyStart, _dollyTarget, blend);
+            UpdateRelativeTransform();
         }
 
-        public void SetNewDollyTarget(float targetPosition)
+        public void SetDollyTarget(Vector3 targetPosition)
         {
-            if (targetPosition > 1 || targetPosition < 0) return;
-            _dollyTarget = targetPosition;
+            _dollyTarget = new (targetPosition.x, transform.position.y, targetPosition.z);
+            _dollyStartTime = Time.time;
+            _dollyStart = transform.position;
+            _dollyDuration = Vector3.Distance(_dollyStart, _dollyTarget) / _dollySpeed;
             _isDollying = true;
         }
     }
