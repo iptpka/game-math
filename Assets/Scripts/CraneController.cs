@@ -9,13 +9,14 @@ namespace GameMath.Crane
         [SerializeField] private Trolley _trolley;
         [SerializeField] private Hook _hook;
         [SerializeField] private Transform _concrete;
-        float _concreteStartingHeight;
+        float _concreteStartLevel;
         Vector3 _target;
         bool _operating = false;
 
         private void Awake()
         {
-            _concreteStartingHeight = _concrete.position.y;
+            _concreteStartLevel = _concrete.position.y;
+            RandomizeConcreteTransform();
         }
 
         public void SetNewTarget(PointerEventData eventData)
@@ -53,20 +54,27 @@ namespace GameMath.Crane
         {
             _hook.Lifted.RemoveAllListeners();
             _hook.Disconnect();
-            var concretePosition = RandomReachablePosition();
-            var concreteRotation = Quaternion.Euler(0, Random.Range(0, 180), 0);
-            _concrete.SetPositionAndRotation(concretePosition, concreteRotation);
+            RandomizeConcreteTransform();
             _operating = false;
+        }
+
+        void RandomizeConcreteTransform()
+        {
+            var concretePosition = RandomReachablePosition();
+            var concreteRotation = Quaternion.Euler(0, Random.Range(-180, 180), 0);
+            _concrete.SetPositionAndRotation(concretePosition, concreteRotation);
         }
 
         Vector3 RandomReachablePosition()
         {
             var cranePosition = _crane.transform.position;
+            cranePosition.y = 0;
             var minRadius = Vector3.ProjectOnPlane(_trolley.NearLimit - cranePosition, Vector3.up).magnitude;
             var maxRadius = Vector3.ProjectOnPlane(_trolley.FarLimit - cranePosition, Vector3.up).magnitude;
             var radius = Random.Range(minRadius, maxRadius);
             var angle = Random.Range(0, 360);
-            return cranePosition + new Vector3(radius * Mathf.Cos(angle), _concreteStartingHeight, radius * Mathf.Sin(angle));
+            Vector3 reachcablePosition = new(radius * Mathf.Cos(angle), _concreteStartLevel, radius * Mathf.Sin(angle));
+            return cranePosition + reachcablePosition;
         }
     }
 }

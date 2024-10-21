@@ -898,7 +898,7 @@ Transform:
   m_GameObject: {fileID: 6023892515792707295}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000001545431, y: -0.7071068, z: 0.00000001545431, w: 0.7071068}
-  m_LocalPosition: {x: -9.5, y: 10.5, z: 14.1}
+  m_LocalPosition: {x: -13.6, y: 10.5, z: -15.6}
   m_LocalScale: {x: 1.5000005, y: 1.5, z: 1.5000005}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1691,7 +1691,7 @@ MonoBehaviour:
   _parent: {fileID: 8658184023392300794}
   _nearLimit: {fileID: 601031390}
   _farLimit: {fileID: 363527139}
-  _dollySpeed: 2
+  _dollySpeed: 4
   ReachedTarget:
     m_PersistentCalls:
       m_Calls: []
