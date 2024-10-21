@@ -461,6 +461,7 @@ MonoBehaviour:
   _crane: {fileID: 8658184023395725017}
   _trolley: {fileID: 8658184023395725023}
   _hook: {fileID: 8658184023395725012}
+  _concrete: {fileID: 6023892515792536319}
 --- !u!4 &866979442
 Transform:
   m_ObjectHideFlags: 0
@@ -1546,7 +1547,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.38724518, y: 0.27928543, z: 0.3123706}
-  m_Center: {x: -0.05219078, y: -2.78788, z: 0.008110523}
+  m_Center: {x: -0.05219078, y: -2.7, z: 0.008110523}
 --- !u!54 &8658184023395725011
 Rigidbody:
   m_ObjectHideFlags: 0

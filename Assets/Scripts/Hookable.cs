@@ -9,7 +9,6 @@ namespace GameMath.Crane
         private Vector3 _relativePosition;
         private Quaternion _relativeRotation;
         private float _height;
-        private bool _canBeHooked = true;
         private bool _isHooked = false;
         public bool CanMoveDown => DistanceToGround() > _height;
 
@@ -29,7 +28,7 @@ namespace GameMath.Crane
 
         protected void OnTriggerEnter(Collider other)
         {
-            if (!_canBeHooked || _isHooked || !other.TryGetComponent(out Hook hook) || !hook.Connect(this)) return;
+            if (_isHooked || !other.TryGetComponent(out Hook hook) || !hook.Connect(this)) return;
             _hook = hook;
             _isHooked = true;
             _relativePosition = _hook.transform.InverseTransformPoint(transform.position);
@@ -52,9 +51,12 @@ namespace GameMath.Crane
             transform.SetPositionAndRotation(GetTargetPosition(), GetTargetRotation());
         }
 
-        protected void Disconnect()
+        public void Disconnect()
         {
             _isHooked = false;
+            _hook = null;
+            _relativePosition = transform.position;
+            _relativeRotation = transform.rotation;
         }
     }
 }

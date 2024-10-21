@@ -16,6 +16,9 @@ namespace GameMath.Crane
         private bool _isDollying = false;
         public UnityEvent ReachedTarget;
 
+        public Vector3 FarLimit => _farLimit.position;
+        public Vector3 NearLimit => _nearLimit.position;
+
         private void Awake() => ReachedTarget ??= new();
 
         void Update()

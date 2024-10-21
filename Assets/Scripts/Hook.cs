@@ -80,6 +80,11 @@ namespace GameMath.Crane
             SetTargetHeight(targetHeight.y);
         }
 
+        public void HoistUp()
+        {
+            SetTargetHeight(_upperLimit);
+        }
+
         public void SetTargetHeight(float targetHeight)
         {
             _targetHeight = targetHeight;
@@ -95,13 +100,13 @@ namespace GameMath.Crane
             _isConnected = true;
             _connectedItem = hooked;
             GetComponent<Collider>().enabled = false;
-            SetTargetHeight(_upperLimit);
             Connected.Invoke();
             return true;
         }
 
         public void Disconnect()
         {
+            _connectedItem.Disconnect();
             _connectedItem = null;
             _isConnected = false;
             GetComponent<Collider>().enabled = true;
