@@ -73,7 +73,8 @@ namespace GameMath.Crane
             var maxRadius = Vector3.ProjectOnPlane(_trolley.FarLimit - cranePosition, Vector3.up).magnitude;
             var radius = Random.Range(minRadius, maxRadius);
             var angle = Random.Range(0, 360);
-            Vector3 reachcablePosition = new(radius * Mathf.Cos(angle), _concreteStartLevel, radius * Mathf.Sin(angle));
+            var yPosition = Random.Range(_concreteStartLevel, _concreteStartLevel + 10);
+            Vector3 reachcablePosition = new(radius * Mathf.Cos(angle), yPosition, radius * Mathf.Sin(angle));
             return cranePosition + reachcablePosition;
         }
     }
